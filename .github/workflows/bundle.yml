@@ -1,0 +1,54 @@
+name: Quality and Rollback (Databricks)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  databricks-quality-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Trigger Databricks ingest_data Notebook
+        id: run_databricks_quality
+        uses: databricks/run-notebook@v0
+        with:
+          databricks-host: ${{ secrets.DATABRICKS_HOST }}
+          databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
+          workspace-notebook-path: /Workspace/Users/traininguser6@sudosu.ai/ingest_data
+          existing-cluster-id: ${{ secrets.DATABRICKS_CLUSTER_ID }}
+
+      # Run rollback notebook only if quality check failed
+      # - name: Trigger Databricks Rollback Notebook
+      #   if: failure()  # ONLY run if previous step failed
+      #   id: run_databricks_rollback
+      #   uses: databricks/run-notebook@v0
+      #   with:
+      #     databricks-host: ${{ secrets.DATABRICKS_HOST }}
+      #     databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
+      #     workspace-notebook-path: /Workspace/Repos/datamartrix/git_to_databricks_cicd/notebooks/rollback
+      #     existing-cluster-id: ${{ secrets.DATABRICKS_CLUSTER_ID }}
+
+      # - name: Trigger Databricks drift Check Notebook
+      #   id: run_databricks_quality_drift
+      #   uses: databricks/run-notebook@v0
+      #   with:
+      #     databricks-host: ${{ secrets.DATABRICKS_HOST }}
+      #     databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
+      #     workspace-notebook-path: /Workspace/Repos/datamartrix/git_to_databricks_cicd/notebooks/drift
+      #     existing-cluster-id: ${{ secrets.DATABRICKS_CLUSTER_ID }}
+
+      # Install CLI if quality check failed (for logs download)
+      # - name: show result
+      #   run: |
+      #     echo "dhgeufhj3"
+      #     echo '${{steps.run_databricks_quality.outputs.notebook-output}}'
+
+      # - name: show result of drift
+      #   run: |
+      #     echo "drift"
+      #     echo '${{steps.run_databricks_quality_drift.outputs.notebook-output}}'
