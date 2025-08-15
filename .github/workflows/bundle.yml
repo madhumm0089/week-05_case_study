@@ -23,15 +23,15 @@ jobs:
           existing-cluster-id: ${{ secrets.DATABRICKS_CLUSTER_ID }}
 
       # Run rollback notebook only if quality check failed
-      - name: Trigger Databricks Rollback Notebook
-        if: failure()  # ONLY run if previous step failed
-        id: run_databricks_rollback
-        uses: databricks/run-notebook@v0
-        with:
-          databricks-host: ${{ secrets.DATABRICKS_HOST }}
-          databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
-          workspace-notebook-path: /Workspace/Repos/datamartrix/git_to_databricks_cicd/notebooks/rollback
-          existing-cluster-id: ${{ secrets.DATABRICKS_CLUSTER_ID }}
+      # - name: Trigger Databricks Rollback Notebook
+      #   if: failure()  # ONLY run if previous step failed
+      #   id: run_databricks_rollback
+      #   uses: databricks/run-notebook@v0
+      #   with:
+      #     databricks-host: ${{ secrets.DATABRICKS_HOST }}
+      #     databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
+      #     workspace-notebook-path: /Workspace/Repos/datamartrix/git_to_databricks_cicd/notebooks/rollback
+      #     existing-cluster-id: ${{ secrets.DATABRICKS_CLUSTER_ID }}
 
 
       # Install CLI if quality check failed (for logs download)
