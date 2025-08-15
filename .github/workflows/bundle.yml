@@ -19,7 +19,7 @@ jobs:
         with:
           databricks-host: ${{ secrets.DATABRICKS_HOST }}
           databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
-          workspace-notebook-path: /Users/traininguser6@sudosu.ai/ingest_data
+          workspace-notebook-path: /Users/traininguser6@sudosu.ai/ETL
           existing-cluster-id: ${{ secrets.DATABRICKS_CLUSTER_ID }}
 
       # Run rollback notebook only if quality check failed
